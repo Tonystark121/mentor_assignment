@@ -1,0 +1,143 @@
+
+.parent{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  /* align-items: center; */
+}
+.box {
+  width: 90%;
+  height: 480px;
+  background-color: #fff;
+  box-shadow: -2px -2px 8px rgba(0, 0, 0, 0.6);
+  border-radius: 1rem;
+  position: relative;
+}
+/* Navbar starts here */
+nav {
+  width: 100%;
+  height: 65px;
+  background-color: #f1f0f0;
+  border-radius: 1rem 1rem 0 0;
+}
+nav ul {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+}
+.searchBox {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+  background-color: #fff;
+}
+.searchBox:focus-within {
+  border-color: #007bff;
+}
+input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 4px;
+  font-size: 16px;
+}
+.icon {
+  margin-left: 5px;
+  color: #666;
+  font-size: 1rem;
+}
+.icon:hover {
+  color: #007bff;
+  cursor: pointer;
+}
+ul h3 {
+  font-size: 1.5rem;
+  opacity: 0.6;
+}
+
+/* Navbar ends here */
+
+/* Detail box starts here */
+.details {
+  width: 100%;
+  height: 100%;
+  border-radius: 0 0 1rem 1rem;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+}
+.main {
+  width: 100%;
+  height: 91%;
+  overflow-y: auto;
+  background-color: #007bff;
+}
+.main::-webkit-scrollbar{
+    display: none;
+}
+.filter {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.filter > div {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #666;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: all 1s;
+}
+.filterBox {
+  width: 100%;
+  height: 100px;
+  border-radius: 0 0 0.5rem 0.5rem;
+  background-color: #666;
+  padding: 1rem;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+th {
+  background-color: #909090;
+}
+th:nth-child(1),
+td:nth-child(1) {
+  width: 20%;
+  text-align: flex-start;
+  padding-left: 2.5rem;
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+  width: 60%;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+  width: 15%;
+  text-align: center;
+}
+th,
+td {
+  border: none;
+}
+.download{
+    font-size: 1.75rem;
+    cursor: pointer;
+    opacity: .8;
+}
