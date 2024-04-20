@@ -69,6 +69,32 @@ const pageSlice = createSlice({
         };
       }
     },
+    moveToPage: (state, { payload }) => {
+      return {
+        ...state,
+        currPage: payload.page,
+        startIdx: (payload.page - 1) * state.rowsLength,
+        lastIdx: payload.page * state.rowsLength,
+      };
+    },
+    moveToLastPage: (state, { payload }) => {
+      const rowsLength = state.rowsLength;
+      return {
+        ...state,
+        currPage: state.totalPages,
+        startIdx: (state.totalPages - 1) * rowsLength,
+        lastIdx: Math.min(state.totalPages * rowsLength, payload.totalItems),
+      };
+    },
+    moveToFirstPage: (state) => {
+      const rowsLength = state.rowsLength;
+      return {
+        ...state,
+        currPage: 1,
+        startIdx: 0,
+        lastIdx: rowsLength
+      };
+    },
   },
   extraReducers: (builder) => {},
 });
@@ -77,5 +103,8 @@ export const {
   setTotalPages,
   moveToNextPage,
   moveToPrevPage,
+  moveToPage,
+  moveToFirstPage,
+  moveToLastPage,
 } = pageSlice.actions;
 export default pageSlice.reducer;

@@ -8,12 +8,14 @@ import {
   setTotalPages,
   moveToNextPage,
   moveToPrevPage,
+  moveToPage, 
+  moveToLastPage,
+  moveToFirstPage
 } from "../redux/paginationSlice";
 
 const pagination = ({ dummyData }) => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.page);
-  const currPage = 1;
   const handleMoveForward = () => {
     dispatch(moveToNextPage());
   };
@@ -31,6 +33,13 @@ const pagination = ({ dummyData }) => {
   useEffect(() => {
     dispatch(setTotalPages({ totalItems: dummyData.length }));
   }, [data.rowsLength]);
+
+  const handleLastPage = () => {
+    dispatch(moveToLastPage({totalItems:dummyData.length}))
+  }
+  const handleFirstPage = () => {
+    dispatch(moveToFirstPage())
+  }
   //  console.log(data.currPage, data.startIdx, data.lastIdx, data.rowsLength,data.totalPages)
 
   const newArr = new Array(data.totalPages).fill(null);
@@ -42,6 +51,10 @@ const pagination = ({ dummyData }) => {
     let end = Math.min(data.totalPages, start + pagesToshow - 1);
     if (end - start < pagesToshow - 1) {
       start = Math.max(1, end - pagesToshow + 1);
+    }
+
+    const handlePageChange = (page) => {
+       dispatch(moveToPage({page}))
     }
 
     for (let i = start; i <= end; i++) {
@@ -57,6 +70,7 @@ const pagination = ({ dummyData }) => {
                 }
               : {}
           }
+          onClick={()=>handlePageChange(i)}
         >
           {i}
         </div>
@@ -69,27 +83,11 @@ const pagination = ({ dummyData }) => {
   return (
     <div className={styles.box}>
       <div className={styles.navigation}>
-        <TbChevronLeftPipe className={styles.icon} />
+        <TbChevronLeftPipe className={styles.icon} onClick={handleFirstPage} />
         <button onClick={handleMoveBackward} disabled={data.currPage === 1}>
           Prev
         </button>
         <div className={styles.items}>
-          {/* {newArr.map((item, idx) => (
-            <div
-              key={idx}
-              style={
-                data.currPage === idx + 1
-                  ? {
-                      background: "#007bff",
-                      color: "#fff",
-                      border: "none",
-                    }
-                  : {}
-              }
-            >
-              {idx + 1}
-            </div>
-          ))} */}
           {PageList()}
         </div>
         <button
@@ -98,7 +96,7 @@ const pagination = ({ dummyData }) => {
         >
           Next
         </button>
-        <TbChevronRightPipe className={styles.icon} />
+        <TbChevronRightPipe className={styles.icon} onClick={handleLastPage} />
       </div>
       <div className={styles.length}>
         <label>Rows per page</label>

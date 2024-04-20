@@ -1,55 +1,51 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
-const API_KEY = 'https://jsonplaceholder.typicode.com/posts'
+const API_KEY = "https://jsonplaceholder.typicode.com/posts";
 
-const fetchData = createAsyncThunk('appSlice/fetchData', async () => {
+export const fetchData = createAsyncThunk("appSlice/fetchData", async () => {
     try {
-        const response = await fetch(API_KEY)
-        if(response.ok){
-            return response.json()
-        }
-        else throw new Error('Something went wrong!')
+       const response = await fetch(API_KEY)
+       const data = await response.json()
+       return data
     } catch (error) {
-        throw new Error(error)
+        throw error
     }
-})
+});
 
 const initialState = {
-    isLoading:false,
-    data : null,
-    error:null
-}
+  isLoading: false,
+  data: null,
+  error: null,
+};
 
 const appSlice = createSlice({
-   name:'appSlice',
-   initialState,
-   reducers:{
-
-   },
-   extraReducers:builder => {
+  name: "appSlice",
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
     builder
-       .addCase(fetchData.pending, (state)=>{
-         return {
-            ...state, 
-            isLoading : true,
-            error: null
-         }
-       })
-       .addCase(fetchData.fulfilled, (state, action)=>{
-         return {
-            ...state, 
-            isLoading :false,
-            data:action.payload
-         }
-       })
-       .addCase(fetchData.rejected, ()=>{
-         return {
-            ...state, 
-            isLoading : false,
-            error: action.payload
-         }
-       })
-   }
-})
+      .addCase(fetchData.pending, (state) => {
+        return {
+          ...state,
+          isLoading: true,
+          error: null,
+        };
+      })
+      .addCase(fetchData.fulfilled, (state, action) => {
+        return {
+          ...state,
+          isLoading: false,
+          data: action.payload,
+        };
+      })
+      .addCase(fetchData.rejected, (state) => {
+        return {
+          ...state,
+          isLoading: false,
+          error: action.error.message,
+        };
+      });
+  },
+});
 
-export default appSlice.reducer
+export default appSlice.reducer;

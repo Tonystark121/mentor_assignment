@@ -1,21 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/home.module.css";
 import Pagination from "./pagination";
 import { IoSearchOutline } from "react-icons/io5";
 import { TbFilter } from "react-icons/tb";
 import { RxCross1 } from "react-icons/rx";
 import { PiFileArrowDownDuotone } from "react-icons/pi";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchData } from "../redux/actionSlice";
+import FilterBox from "./filterBox";
+import { setText } from "../redux/filterSlice";
 
 const Nav = ({ showFilterBox, hideFilterBox }) => {
+   const dispatch = useDispatch()
+   const handleSearch = (e) => {
+      dispatch(setText({text:e.target.value}))
+   }
   return (
     <nav>
       <ul>
         <div className={styles.searchBox}>
-          <input type="text" placeholder="search files..." />
+          <input type="text" placeholder="search files..." onClick={handleSearch} />
           <IoSearchOutline className={styles.icon} />
         </div>
-        <h3>Recently Generated Posts</h3>
+        <h3>Recently Generated Reports</h3>
         <div className={styles.filter}>
           <div onClick={showFilterBox}>
             <TbFilter />
@@ -39,7 +46,14 @@ const home = () => {
     console.log("Hide filter");
     setShowFilterBox(false);
   };
-  const {startIdx, lastIdx} = useSelector(state => state.page)
+  const { startIdx, lastIdx } = useSelector((state) => state.page);
+  const data = useSelector((state) => state.app);
+  const {size, type, text, date} = useSelector(state => state.filter)
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchData());
+  }, []);
+  console.log(size, type, text,date)
   const dummyData = [
     {
       date: "23-May-2024",
@@ -123,7 +137,7 @@ const home = () => {
       <div className={styles.box}>
         <Nav showFilterBox={showFilter} hideFilterBox={hideFilter} />
         <div className={styles.details}>
-          {showFilterBox && <div className={styles.filterBox}></div>}
+          {showFilterBox && <FilterBox hideFilter={hideFilter} />}
           <div className={styles.main}>
             <table>
               <tr className={styles.heading}>
