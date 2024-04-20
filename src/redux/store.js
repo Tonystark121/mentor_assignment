@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import appSlice from './actionSlice'
+import paginationSlice from "./paginationSlice";
 
 const store = configureStore({
     reducer:{
-        app : appSlice
+        app : appSlice,
+        page : paginationSlice
     }
 })
 

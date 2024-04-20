@@ -6,7 +6,7 @@ const fetchData = createAsyncThunk('appSlice/fetchData', async () => {
     try {
         const response = await fetch(API_KEY)
         if(response.ok){
-            return response
+            return response.json()
         }
         else throw new Error('Something went wrong!')
     } catch (error) {
@@ -28,8 +28,26 @@ const appSlice = createSlice({
    },
    extraReducers:builder => {
     builder
-       .addCase(fetchData.pending, ()=>{
-        
+       .addCase(fetchData.pending, (state)=>{
+         return {
+            ...state, 
+            isLoading : true,
+            error: null
+         }
+       })
+       .addCase(fetchData.fulfilled, (state, action)=>{
+         return {
+            ...state, 
+            isLoading :false,
+            data:action.payload
+         }
+       })
+       .addCase(fetchData.rejected, ()=>{
+         return {
+            ...state, 
+            isLoading : false,
+            error: action.payload
+         }
        })
    }
 })

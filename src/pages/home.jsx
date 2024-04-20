@@ -5,6 +5,7 @@ import { IoSearchOutline } from "react-icons/io5";
 import { TbFilter } from "react-icons/tb";
 import { RxCross1 } from "react-icons/rx";
 import { PiFileArrowDownDuotone } from "react-icons/pi";
+import { useSelector } from "react-redux";
 
 const Nav = ({ showFilterBox, hideFilterBox }) => {
   return (
@@ -38,6 +39,7 @@ const home = () => {
     console.log("Hide filter");
     setShowFilterBox(false);
   };
+  const {startIdx, lastIdx} = useSelector(state => state.page)
   const dummyData = [
     {
       date: "23-May-2024",
@@ -129,7 +131,7 @@ const home = () => {
                 <th>Report Name</th>
                 <th>Download</th>
               </tr>
-              {dummyData.map((item, idx) => (
+              {dummyData.slice(startIdx, lastIdx).map((item, idx) => (
                 <tr key={idx}>
                   <td>{item.date}</td>
                   <td>{item.report}</td>
@@ -142,7 +144,7 @@ const home = () => {
               ))}
             </table>
           </div>
-          <Pagination />
+          <Pagination dummyData={dummyData} />
         </div>
       </div>
     </div>
