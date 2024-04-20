@@ -102,7 +102,7 @@ const home = () => {
               {!result.data.length && <h1>Loading...</h1>}
             </table>
           </div>
-          <Pagination dummyData={result.data} />
+          <Pagination dummyData={result.data} className={styles.pagination} />
         </div>
       </div>
     </div>

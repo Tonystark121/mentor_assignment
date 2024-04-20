@@ -66,16 +66,14 @@ ul h3 {
 .details {
   width: 100%;
   height: 100%;
-  border-radius: 0 0 1rem 1rem;
   overflow: auto;
   display: flex;
   flex-direction: column;
 }
 .main {
   width: 100%;
-  height: 91%;
+  height: 86%;
   overflow-y: auto;
-  background-color: #007bff;
 }
 .main::-webkit-scrollbar{
     display: none;
@@ -140,4 +138,7 @@ td {
     font-size: 1.75rem;
     cursor: pointer;
     opacity: .8;
+}
+.pagination{
+  margin-top: -2rem;
 }
