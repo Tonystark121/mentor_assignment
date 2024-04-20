@@ -20,14 +20,12 @@ const filterSlice = createSlice({
       };
     },
     setType: (state, { payload }) => {
-      console.log(payload);
       return {
         ...state,
         type: payload.type,
       };
     },
     setDate: (state, { payload }) => {
-      console.log(payload);
       return {
         ...state,
         date: payload.date,

@@ -92,7 +92,7 @@ const pageSlice = createSlice({
         ...state,
         currPage: 1,
         startIdx: 0,
-        lastIdx: rowsLength
+        lastIdx: rowsLength,
       };
     },
   },

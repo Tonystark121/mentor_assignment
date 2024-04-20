@@ -9,17 +9,23 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchData } from "../redux/actionSlice";
 import FilterBox from "./filterBox";
 import { setText } from "../redux/filterSlice";
+import { setTotalPages } from "../redux/paginationSlice";
 
 const Nav = ({ showFilterBox, hideFilterBox }) => {
-   const dispatch = useDispatch()
-   const handleSearch = (e) => {
-      dispatch(setText({text:e.target.value}))
-   }
+  const dispatch = useDispatch();
+  const handleSearch = (e) => {
+    console.log(e.target.value);
+    dispatch(setText({ text: e.target.value }));
+  };
   return (
     <nav>
       <ul>
         <div className={styles.searchBox}>
-          <input type="text" placeholder="search files..." onClick={handleSearch} />
+          <input
+            type="text"
+            placeholder="search files..."
+            onChange={handleSearch}
+          />
           <IoSearchOutline className={styles.icon} />
         </div>
         <h3>Recently Generated Reports</h3>
@@ -39,99 +45,24 @@ const Nav = ({ showFilterBox, hideFilterBox }) => {
 const home = () => {
   const [showFilterBox, setShowFilterBox] = useState(false);
   const showFilter = () => {
-    console.log("filter");
     setShowFilterBox(true);
   };
   const hideFilter = () => {
-    console.log("Hide filter");
     setShowFilterBox(false);
   };
   const { startIdx, lastIdx } = useSelector((state) => state.page);
-  const data = useSelector((state) => state.app);
-  const {size, type, text, date} = useSelector(state => state.filter)
+  const result = useSelector((state) => state.app);
+  const { size, type, text, date } = useSelector((state) => state.filter);
   const dispatch = useDispatch();
+
+  console.log(text,size, type,date)
+
   useEffect(() => {
     dispatch(fetchData());
   }, []);
-  console.log(size, type, text,date)
-  const dummyData = [
-    {
-      date: "23-May-2024",
-      report: "Report_on_the_Bridge.csv",
-    },
-    {
-      date: "23-May-2024",
-      report: "Report_on_the_Bridge.csv",
-    },
-    {
-      date: "23-May-2024",
-      report: "Report_on_the_Bridge.csv",
-    },
-    {
-      date: "23-May-2024",
-      report: "Report_on_the_Bridge.csv",
-    },
-    {
-      date: "23-May-2024",
-      report: "Report_on_the_Bridge.csv",
-    },
-    {
-      date: "23-May-2024",
-      report: "Report_on_the_Bridge.csv",
-    },
-    {
-      date: "23-May-2024",
-      report: "Report_on_the_Bridge.csv",
-    },
-    {
-      date: "23-May-2024",
-      report: "Report_on_the_Bridge.csv",
-    },
-    {
-      date: "23-May-2024",
-      report: "Report_on_the_Bridge.csv",
-    },
-    {
-      date: "23-May-2024",
-      report: "Report_on_the_Bridge.csv",
-    },
-    {
-      date: "23-May-2024",
-      report: "Report_on_the_Bridge.csv",
-    },
-    {
-      date: "23-May-2024",
-      report: "Report_on_the_Bridge.csv",
-    },
-    {
-      date: "23-May-2024",
-      report: "Report_on_the_Bridge.csv",
-    },
-    {
-      date: "23-May-2024",
-      report: "Report_on_the_Bridge.csv",
-    },
-    {
-      date: "23-May-2024",
-      report: "Report_on_the_Bridge.csv",
-    },
-    {
-      date: "23-May-2024",
-      report: "Report_on_the_Bridge.csv",
-    },
-    {
-      date: "23-May-2024",
-      report: "Report_on_the_Bridge.csv",
-    },
-    {
-      date: "23-May-2024",
-      report: "Report_on_the_Bridge.csv",
-    },
-    {
-      date: "23-May-2024",
-      report: "Report_on_the_Bridge.csv",
-    },
-  ];
+
+  // I have written the logic for filtering, but not able to filter data beacasue do not find related api.
+
   return (
     <div className={styles.parent}>
       <div className={styles.box}>
@@ -145,20 +76,33 @@ const home = () => {
                 <th>Report Name</th>
                 <th>Download</th>
               </tr>
-              {dummyData.slice(startIdx, lastIdx).map((item, idx) => (
-                <tr key={idx}>
-                  <td>{item.date}</td>
-                  <td>{item.report}</td>
-                  <td>
-                    <div>
-                      <PiFileArrowDownDuotone className={styles.download} />
-                    </div>
-                  </td>
-                </tr>
-              ))}
+              {result.data.length >= 1 &&
+                result.data
+                  ?.filter((items) =>
+                    items.title
+                      .toLowerCase()
+                      .includes(text.length ? text.toLowerCase() : "") 
+                      // &&
+                      // (date === null  || items.date === date) &&
+                      // (size === null || items.size === size) && 
+                      // (type === null || items.type === type)
+                  )
+                  .slice(startIdx, lastIdx)
+                  .map((item, idx) => (
+                    <tr key={idx}>
+                      <td>{`${item.id % 31} Mar 2024`}</td>
+                      <td>{item.title.slice(0, 12)}</td>
+                      <td>
+                        <div>
+                          <PiFileArrowDownDuotone className={styles.download} />
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+              {!result.data.length && <h1>Loading...</h1>}
             </table>
           </div>
-          <Pagination dummyData={dummyData} />
+          <Pagination dummyData={result.data} />
         </div>
       </div>
     </div>

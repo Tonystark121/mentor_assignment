@@ -14,7 +14,7 @@ export const fetchData = createAsyncThunk("appSlice/fetchData", async () => {
 
 const initialState = {
   isLoading: false,
-  data: null,
+  data: [],
   error: null,
 };
 
@@ -38,7 +38,7 @@ const appSlice = createSlice({
           data: action.payload,
         };
       })
-      .addCase(fetchData.rejected, (state) => {
+      .addCase(fetchData.rejected, (state, action) => {
         return {
           ...state,
           isLoading: false,

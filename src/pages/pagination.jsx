@@ -8,14 +8,16 @@ import {
   setTotalPages,
   moveToNextPage,
   moveToPrevPage,
-  moveToPage, 
+  moveToPage,
   moveToLastPage,
-  moveToFirstPage
+  moveToFirstPage,
 } from "../redux/paginationSlice";
 
 const pagination = ({ dummyData }) => {
   const dispatch = useDispatch();
   const data = useSelector((state) => state.page);
+
+  // functions
   const handleMoveForward = () => {
     dispatch(moveToNextPage());
   };
@@ -30,17 +32,25 @@ const pagination = ({ dummyData }) => {
       })
     );
   };
-  useEffect(() => {
-    dispatch(setTotalPages({ totalItems: dummyData.length }));
-  }, [data.rowsLength]);
-
   const handleLastPage = () => {
-    dispatch(moveToLastPage({totalItems:dummyData.length}))
-  }
+    dispatch(moveToLastPage({ totalItems: dummyData.length }));
+  };
   const handleFirstPage = () => {
-    dispatch(moveToFirstPage())
-  }
-  //  console.log(data.currPage, data.startIdx, data.lastIdx, data.rowsLength,data.totalPages)
+    dispatch(moveToFirstPage());
+  };
+
+  // functions ends here
+  useEffect(() => {
+    if (dummyData.length) {
+      dispatch(setTotalPages({ totalItems: dummyData.length }));
+    }
+  }, [dummyData.length]);
+
+  useEffect(() => {
+    if (dummyData.length) {
+      dispatch(setTotalPages({ totalItems: dummyData.length }));
+    }
+  }, [data.rowsLength]);
 
   const newArr = new Array(data.totalPages).fill(null);
 
@@ -54,8 +64,8 @@ const pagination = ({ dummyData }) => {
     }
 
     const handlePageChange = (page) => {
-       dispatch(moveToPage({page}))
-    }
+      dispatch(moveToPage({ page }));
+    };
 
     for (let i = start; i <= end; i++) {
       pageList.push(
@@ -70,13 +80,12 @@ const pagination = ({ dummyData }) => {
                 }
               : {}
           }
-          onClick={()=>handlePageChange(i)}
+          onClick={() => handlePageChange(i)}
         >
           {i}
         </div>
       );
     }
-
     return pageList;
   };
 
@@ -87,9 +96,7 @@ const pagination = ({ dummyData }) => {
         <button onClick={handleMoveBackward} disabled={data.currPage === 1}>
           Prev
         </button>
-        <div className={styles.items}>
-          {PageList()}
-        </div>
+        <div className={styles.items}>{PageList()}</div>
         <button
           onClick={handleMoveForward}
           disabled={data.currPage === data.totalPages}
